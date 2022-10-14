@@ -167,6 +167,7 @@ print("Number of negatives the model got in Leave-one-out:", negatives)
 print("Actual Number of positives in data:", POSITIVE_PRIOR)
 print("Number of positives the model got in Leave-one-out:", positives)
 print("Leave-one-out percentage correct:", percent_correct_classifications)
+
 '''
 Actual Number of negatives in data: 16259
 Number of negatives the model got in Leave-one-out: 16152

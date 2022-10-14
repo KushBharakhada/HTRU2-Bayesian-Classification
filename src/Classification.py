@@ -150,22 +150,41 @@ def train_and_test(test_index):
     # Checking which class gives the maximum
     # Using Bayes Decision Theory
     max_class = np.argmax(p_stack, axis=0)
-    # Returns an array of a single boolean hence the index 0
-    return (test_data[CLASS_COLUMN_INDEX] == max_class)[0]
+
+    # First parameter returns the value classified to (index 0 as it is a list containing a single value)
+    # Second parameter returns an array of a single boolean hence the index 0
+    return max_class[0], (test_data[CLASS_COLUMN_INDEX] == max_class)[0]
 
 
 # Classifying every sample using leave-one-out training
 def classify():
     n_correct = 0
     n_total = data.shape[0]
+    samples_classified = np.zeros(n_total)
     for index in range(n_total):
-        n_correct = n_correct + train_and_test(index)
+        test_data = train_and_test(index)
+        n_correct = n_correct + test_data[1]
+        samples_classified[index] = test_data[0]
 
+    positives_classified = np.count_nonzero(samples_classified == 1)
+    negatives_classified = np.count_nonzero(samples_classified == 0)
     percent_correct = n_correct * 100.0 / n_total
-    return percent_correct
+    return percent_correct, positives_classified, negatives_classified
 
 
-percent_correct_classifications = classify()
+percent_correct_classifications, positives, negatives = classify()
+
+# Information
+print("Actual Number of negatives in data:", NEGATIVE_PRIOR)
+print("Number of negatives the model got in Leave-one-out:", negatives)
+print("Actual Number of positives in data:", POSITIVE_PRIOR)
+print("Number of positives the model got in Leave-one-out:", positives)
 print("Leave-one-out percentage correct:", percent_correct_classifications)
-# Leave-one-out percentage correct: 96.73147837747234
+'''
+Actual Number of negatives in data: 16259
+Number of negatives the model got in Leave-one-out: 16152
+Actual Number of positives in data: 1639
+Number of positives the model got in Leave-one-out: 1746
+Leave-one-out percentage correct: 96.73147837747234
+'''
 

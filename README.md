@@ -29,7 +29,7 @@ Each pulsar produces a slightly different emission pattern, which varies slightl
 
 ## Code
 
-Uses Bayesian Classification to classify Pulsae and Non-Pulsar.
+Uses Bayesian Classification to classify Pulsar and Non-Pulsar.
 There are two methods, they differ in the proportion of data used for Testing and Training.
 The priors are calculated using the whole data set.
 
@@ -43,9 +43,9 @@ The mean vector and covariance matrix is calculated for the positive and negativ
 
 #### Testing
 
-The likelihoods are calculated for the testing data set. Each row is a feature vector of values (excluding the class column) which is a data point in the multivariate distribution. Therefore each row gives a single value back, p(x|w). The testing data set is calculated on each of the distributions, the trained positive and negative distributions and the priors are taken into account inorder to calculate p(w|x) (Bayes Rule). Using Bayes Decision Theorem, check which class, w, the feature vector x belongs to. Compare the resulting classifications with the actual classifications in the testing data.
+The likelihoods are calculated for the testing data set. Each row is a feature vector of values (excluding the class column) which is a data point in the multivariate distribution. Therefore each row gives a single value back, p(x|w). The testing data set is calculated on each of the distributions, the trained positive and negative distributions, and the priors are taken into account inorder to calculate p(w|x) (Bayes Rule). Using Bayes Decision Theorem, check which class, w, the feature vector, x, belongs to. Compare the resulting classifications with the actual classifications in the testing data.
 
-#### Method 2
+### Method 2
 
 Idea is to use more data for training. Uses 'leave-one-out' testing. Uses just the first sample for testing and train using all the remaining N−1 samples. Then, repeat the this using the 2nd sample for testing and the other N−1 for training, and then again using the 3rd sample for testing and so on until all N samples have been tested. The number of correct classifications is calculated after.
 

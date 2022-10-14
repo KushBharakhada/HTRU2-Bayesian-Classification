@@ -57,11 +57,11 @@ pulsar_test = np.vstack((positive_data_test, negative_data_test))
 
 # Calculating mean and covariance matrix
 # Excluding last column which represents the class
-positive_train_mean = np.mean(pulsar_train[:, 0:CLASS_COLUMN_INDEX], axis=0)
-negative_train_mean = np.mean(pulsar_train[:, 0:CLASS_COLUMN_INDEX], axis=0)
+positive_train_mean = np.mean(positive_data_train[:, 0:CLASS_COLUMN_INDEX], axis=0)
+negative_train_mean = np.mean(negative_data_train[:, 0:CLASS_COLUMN_INDEX], axis=0)
 
-positive_train_cov = np.cov(pulsar_train[:, 0:CLASS_COLUMN_INDEX], rowvar=0)
-negative_train_cov = np.cov(pulsar_train[:, 0:CLASS_COLUMN_INDEX], rowvar=0)
+positive_train_cov = np.cov(positive_data_train[:, 0:CLASS_COLUMN_INDEX], rowvar=0)
+negative_train_cov = np.cov(negative_data_train[:, 0:CLASS_COLUMN_INDEX], rowvar=0)
 
 # METHOD 2 (Leave-one-out testing)
 

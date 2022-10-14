@@ -3,9 +3,16 @@
 Classification.py
 
 Main program where Bayes Classification will be used to classify the Pulsar's.
+Candidates must be classified in to pulsar and non-pulsar classes.
 
 Author: Kush Bharakhada
 
+Citation:
+R. J. Lyon, B. W. Stappers, S. Cooper, J. M. Brooke, J. D. Knowles, Fifty Years of Pulsar Candidate Selection:
+From simple filters to a new principled real-time classification approach, Monthly Notices of the Royal Astronomical
+Society 459 (1), 1104-1123, DOI: 10.1093/mnras/stw656
+
+Dataset Information:
 Here the legitimate pulsar examples are a minority positive class, and spurious examples
 the majority negative class.
 
@@ -99,13 +106,66 @@ print("Actual Number of positives in test:", np.count_nonzero(real_class_values 
 print("Number of positives the model got in test:", np.count_nonzero(index_higher_score == 1))
 print("Percentage correct:", percentage_correct)
 
+'''
+Actual Number of negatives in test: 8129
+Number of negatives the model got in test: 8088
+Actual Number of positives in test: 819
+Number of positives the model got in test: 860
+Percentage correct: 96.5690657130085
+'''
+
 # METHOD 2 (Leave-one-out testing)
 
+# Train a classifier using all the data in 'data' except the sample test_index. Then tests the
+# sample test_index. Returns True if the sample is classified correctly otherwise returns False.
+def train_and_test(test_index):
+    # Splitting data: training and test value
+    test_data = data[test_index, :]
+    removed_index_sample = np.delete(data, test_index, axis=0)
+
+    # Training
+
+    # Splitting data into positive and negative
+    positive_data_sample = removed_index_sample[removed_index_sample[:, CLASS_COLUMN_INDEX] == 1, :]
+    negative_data_sample = removed_index_sample[removed_index_sample[:, CLASS_COLUMN_INDEX] == 0, :]
+
+    # Covariances
+    positive_sample_cov = np.cov(positive_data_sample[:, 0:CLASS_COLUMN_INDEX], rowvar=0)
+    negative_sample_cov = np.cov(negative_data_sample[:, 0:CLASS_COLUMN_INDEX], rowvar=0)
+
+    # Means
+    positive_sample_mean = np.mean(positive_data_sample[:, 0:CLASS_COLUMN_INDEX], axis=0)
+    negative_sample_mean = np.mean(negative_data_sample[:, 0:CLASS_COLUMN_INDEX], axis=0)
+
+    # Testing
+
+    pos_sample_distribution = multivariate_normal(mean=positive_sample_mean, cov=positive_sample_cov)
+    np1 = pos_sample_distribution.pdf(test_data[:CLASS_COLUMN_INDEX]) * POSITIVE_PRIOR
+
+    neg_sample_distribution = multivariate_normal(mean=negative_sample_mean, cov=negative_sample_cov)
+    np2 = neg_sample_distribution.pdf(test_data[:CLASS_COLUMN_INDEX]) * NEGATIVE_PRIOR
+
+    p_stack = np.vstack((np2, np1))
+
+    # Checking which class gives the maximum
+    # Using Bayes Decision Theory
+    max_class = np.argmax(p_stack, axis=0)
+    # Returns an array of a single boolean hence the index 0
+    return (test_data[CLASS_COLUMN_INDEX] == max_class)[0]
 
 
+# Classifying every sample using leave-one-out training
+def classify():
+    n_correct = 0
+    n_total = data.shape[0]
+    for index in range(n_total):
+        n_correct = n_correct + train_and_test(index)
+
+    percent_correct = n_correct * 100.0 / n_total
+    return percent_correct
 
 
-
-
-
+percent_correct_classifications = classify()
+print("Leave-one-out percentage correct:", percent_correct_classifications)
+# Leave-one-out percentage correct: 96.73147837747234
 

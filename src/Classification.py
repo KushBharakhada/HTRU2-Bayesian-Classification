@@ -12,19 +12,6 @@ R. J. Lyon, B. W. Stappers, S. Cooper, J. M. Brooke, J. D. Knowles, Fifty Years 
 From simple filters to a new principled real-time classification approach, Monthly Notices of the Royal Astronomical
 Society 459 (1), 1104-1123, DOI: 10.1093/mnras/stw656
 
-Dataset Information:
-Here the legitimate pulsar examples are a minority positive class, and spurious examples
-the majority negative class.
-
-The data set shared here contains 16,259 spurious examples caused by RFI/noise, and 1,639
-real pulsar examples. These examples have all been checked by human annotators. Each
-candidate is described by 8 continuous variables. The first four are simple statistics
-obtained from the integrated pulse profile (folded profile). This is an array of continuous
-variables that describe a longitude-resolved version of the signal that has been averaged
-in both time and frequency (see [3] for more details). The remaining four variables are
-similarly obtained from the DM-SNR curve (again see [3] for more details). These are
-summarised below:
-
 1. Mean of the integrated profile.
 2. Standard deviation of the integrated profile.
 3. Excess kurtosis of the integrated profile.
